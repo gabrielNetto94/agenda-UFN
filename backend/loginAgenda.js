@@ -44,7 +44,7 @@ module.exports = {
         const { cpf, password } = req.body;
 
         var url = 'https://www.ufn.edu.br/agenda/';
-        await page.goto(url)
+        await page.goto(url);
 
         //DIGITAR CPF
         await page.waitForSelector('#chave');
@@ -106,7 +106,9 @@ module.exports = {
         console.log('Login Realizado');
 
         //PEGA O NOME DO ESTUDANDTE NO AGENDA
-        await page.waitForSelector('#menu_superior_usuario > div > div > span.usuario-titulo');
+        await page.waitForSelector('#menu_superior_usuario > div > div > span.usuario-titulo',{
+            timeout: 5000
+        });
 
         //OUTRA MANEIRA DE PEGAR APENAS 1 ELEMENTO
         const studentName = await page.evaluate(
@@ -148,9 +150,10 @@ module.exports = {
         */
 
         //MOSTRA A NOTA DAS DISCIPLINAS
-        for (var i = 0; i < disciplinas.length; i++) {
+        /*for (var i = 0; i < disciplinas.length; i++) {
             console.log(disciplinas[i] + ' -- Nota1: ' + nota1[i] + ' Nota2: ' + nota2[i] + ' Nota3: ' + nota3[i])
-        }
+        }*/
+        console.log('Notas enviadas!')
         //JUNTA A NOTA DE CADA BIMISTRE COM CADA DISCIPLINA
         const scoreTable = {};
         for (i in disciplinas) {
@@ -168,7 +171,7 @@ module.exports = {
         startBroser();
 
         res.json({
-            'aluno(a)': studentName.trim(),
+            aluno: studentName.trim(),
             matricula: matriculaAluno,
             scoreTable
         })
