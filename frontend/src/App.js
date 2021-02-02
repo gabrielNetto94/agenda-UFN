@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import api from './api';
+import './App.css';
 
 function App() {
 
@@ -31,103 +32,80 @@ function App() {
 
     }
 
-    return (
-        <>
-            <div className="container">
-                <div className="row justify-content-center">
-                    <div className="col-4">
-                        <div className="card" style={{ width: '100%' }}>
-                            <div className="card-body">
+    function dataTable() {
+        return (
+            <>
 
-                                <h5 className="card-title">Login Agenda UFN</h5>
+                <div class="container">
+                    <div class="row justify-content-md-center">
+                        <div class="col-md-auto">
+                            <h5>Nome: {nomeAluno}  -  Matrícula: {matricula}</h5>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Disciplina</th>
+                                        <th>Nota 1</th>
+                                        <th>Nota 2</th>
+                                        <th>Nota 3</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {disciplinas.map((d, index) => (
+                                        <tr key={index}>{d}
+                                            <td>{nota1[index]}</td>
+                                            <td>{nota2[index]}</td>
+                                            <td>{nota3[index]}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
 
-                                <form onSubmit={handleLogin}>
-                                    <div className="input-group input-group-sm mb-3">
-                                        <input className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Digite seu CPF" type="number" name="cpf" required onChange={event => setCpf(event.target.value)} />
-                                    </div>
+                        </div>
+                    </div>
+                </div>
+            </>
+        );
+    }
 
-                                    <div className="input-group input-group-sm mb-3">
-                                        <input className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Senha do Agenda UFN" type="password" name="password" required onChange={event => setPass(event.target.value)} /><br />
-                                    </div>
+    function loginAgenda() {
+        return (
+            <>
+                <div className="container">
+                    <div className="row justify-content-center">
+                        <div className="col-4">
+                            <div className="card" style={{ width: '100%' }}>
+                                <div className="card-body">
 
-                                    <button type="submit" className="btn btn-outline-primary">Buscar informações</button>
-                                </form>
+                                    <h5 className="card-title">Login Agenda UFN</h5>
+
+                                    <form onSubmit={handleLogin}>
+                                        <div className="input-group input-group-sm mb-3">
+                                            <input className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Digite seu CPF" type="number" name="cpf" required onChange={event => setCpf(event.target.value)} />
+                                        </div>
+
+                                        <div className="input-group input-group-sm mb-3">
+                                            <input className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Senha do Agenda UFN" type="password" name="password" required onChange={event => setPass(event.target.value)} /><br />
+                                        </div>
+
+                                        <button type="submit" className="btn btn-outline-primary">Buscar informações</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </>
+        );
+    }
 
-            {/*     ALERTA DE GAMBIARRA!!!     */}
-            <div class="container">
-                
-                <h5>Nome: {nomeAluno} - {matricula}</h5>
+    return (
+        <>
 
-                <div class="row justify-content-start">
+            {loginAgenda()}
+            {dataTable()}
 
-                    <div class="col-5">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Disciplina</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {disciplinas.map(d => (
-                                    <tr key={Math.random}>{d}</tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="col-2">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Nota 1</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {nota1.map(d => (
-                                    <tr key={Math.random}>{d}</tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="col-2">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Nota 2</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {nota2.map(d => (
-                                    <tr key={Math.random}>{d}</tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="col-2">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Nota 3</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {nota3.map(d => (
-                                    <tr key={Math.random}>{d}</tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-            </div>
         </>
     );
 }
+
 export default App;
