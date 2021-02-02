@@ -23,12 +23,13 @@ function App() {
             password
         });
 
-        setNomeAluno(response.data.aluno);
-        setMatricula(response.data.matricula);
-        setDisciplinas(response.data.disciplinas);
-        setNota1(response.data.nota1);
-        setNota2(response.data.nota2);
-        setNota3(response.data.nota3);
+        const { aluno, matricula, disciplinas, nota1, nota2, nota3 } = response.data;
+        setNomeAluno(aluno);
+        setMatricula(matricula);
+        setDisciplinas(disciplinas);
+        setNota1(nota1);
+        setNota2(nota2);
+        setNota3(nota3);
 
     }
 
