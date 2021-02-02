@@ -44,8 +44,8 @@ module.exports = {
         const { cpf, password } = req.body;
 
         var url = 'https://www.ufn.edu.br/agenda/';
+        const navigationPromise = page.waitForNavigation({waitUntil: "domcontentloaded"});
         await page.goto(url);
-
         //DIGITAR CPF
         await page.waitForSelector('#chave');
         await page.focus('#chave');
@@ -106,8 +106,9 @@ module.exports = {
         console.log('Login Realizado');
 
         //PEGA O NOME DO ESTUDANDTE NO AGENDA
+        await navigationPromise;
         await page.waitForSelector('#menu_superior_usuario > div > div > span.usuario-titulo',{
-            timeout: 5000
+            timeout: 10000
         });
 
         //OUTRA MANEIRA DE PEGAR APENAS 1 ELEMENTO
