@@ -155,7 +155,8 @@ module.exports = {
         }*/
         console.log('Notas enviadas!')
         //JUNTA A NOTA DE CADA BIMISTRE COM CADA DISCIPLINA
-        const scoreTable = {};
+        
+        /*const scoreTable = {};
         for (i in disciplinas) {
             scoreTable[i] = {
                 disciplina: disciplinas[i],
@@ -164,7 +165,7 @@ module.exports = {
                 nota3: nota3[i]
 
             }
-        }
+        }*/
 
         //FECHA O NAVEGADOR PARA ENCERRAR A SESSÃO ABERTA E INICIA NOVAMENTE PARA LOGAR COM OUTRO USUÁRIO
         closeBrowser();
@@ -173,7 +174,11 @@ module.exports = {
         res.json({
             aluno: studentName.trim(),
             matricula: matriculaAluno,
-            scoreTable
+            disciplinas,
+            nota1,
+            nota2,
+            nota3
+            //scoreTable
         })
     }
 }
