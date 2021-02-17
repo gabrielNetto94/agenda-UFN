@@ -44,7 +44,6 @@ module.exports = {
         const { cpf, password } = req.body;
 
         var url = 'https://www.ufn.edu.br/agenda/';
-        const navigationPromise = page.waitForNavigation({waitUntil: "domcontentloaded"});
         await page.goto(url);
         //DIGITAR CPF
         await page.waitForSelector('#chave');
@@ -106,9 +105,8 @@ module.exports = {
         console.log('Login Realizado');
 
         //PEGA O NOME DO ESTUDANDTE NO AGENDA
-        await navigationPromise;
-        await page.waitForSelector('#menu_superior_usuario > div > div > span.usuario-titulo',{
-            timeout: 10000
+        await page.waitForSelector('#menu_superior_usuario > div > div > span.usuario-titulo', {
+            timeout: 120000
         });
 
         //OUTRA MANEIRA DE PEGAR APENAS 1 ELEMENTO
@@ -119,67 +117,32 @@ module.exports = {
         console.log('Buscando notas de ' + studentName);
 
         //ESPERA A TABELA DE NOTAS E A PRIMEIRA DISCIPLINA SER GERADA
-        await page.waitForSelector('#caderno_conteudo > div.cartao-conteudo > div > div.tabela-conteudo');
+        await page.waitForSelector('#caderno_conteudo > div.cartao-conteudo > div > div.tabela-conteudo', {
+            timeout: 120000
+        });
         await page.waitForSelector('#caderno_conteudo > div.cartao-conteudo > div > div.tabela-conteudo > div:nth-child(1) > div:nth-child(4)');
         await page.waitForSelector('#caderno_conteudo > div.cartao-conteudo > div > div.tabela-conteudo > div:nth-child(1) > div:nth-child(5)');
         await page.waitForSelector('#caderno_conteudo > div.cartao-conteudo > div > div.tabela-conteudo > div:nth-child(1) > div:nth-child(6)');
 
-        //COLOCA OS VALORES PARA OS VETORES  ps: da pra melhorar esse código mas não sei trabalhar direito com .map ou com o page.$$eval  
-        const disciplinas = await page.$$eval('.tabela-conteudo .tabela-linha .col.col-12.cor-matriculado:nth-child(1)', disciplinas => {
-            return disciplinas.map(disciplina => disciplina.textContent.trim())
-        })
-
-        const nota1 = await page.evaluate(
-            () => Array.from(document.querySelectorAll('.tabela-conteudo .tabela-linha .col.col-2.a-center:nth-child(4)'))
-                .map((nota) => nota.innerText.trim())
+        const scoreTable = await page.evaluate(() =>
+            Array.from(document.querySelectorAll("#caderno_conteudo > div.cartao-conteudo > div > div.tabela-conteudo > div"))
+                .map(element => ({
+                    disciplina: element.querySelector('.tabela-conteudo .tabela-linha .col.col-12.cor-matriculado:nth-child(1)').innerHTML.trim(),
+                    nota1: element.querySelector('.tabela-conteudo .tabela-linha .col.col-2.a-center:nth-child(4)').innerHTML.trim(),
+                    nota2: element.querySelector('.tabela-conteudo .tabela-linha .col.col-2.a-center:nth-child(5)').innerHTML.trim(),
+                    nota3: element.querySelector('.tabela-conteudo .tabela-linha .col.col-2.a-center:nth-child(6)').innerHTML.trim()
+                }))
         )
 
-        const nota2 = await page.evaluate(
-            () => Array.from(document.querySelectorAll('.tabela-conteudo .tabela-linha .col.col-2.a-center:nth-child(5)'))
-                .map((nota) => nota.innerText.trim())
-        )
-
-        const nota3 = await page.evaluate(
-            () => Array.from(document.querySelectorAll('.tabela-conteudo .tabela-linha .col.col-2.a-center:nth-child(6)'))
-                .map((nota) => nota.innerText.trim())
-        )
-
-        //OUTRO EXEMPLO DE COMO BUSCAR AS NOTAS PELO MÉTODO $$eval
-        /*const nota1 = await page.$$eval('.tabela-conteudo .tabela-linha .col.col-2.a-center:nth-child(4)', notas => {
-            return notas.map(nota => nota.textContent.trim())
-        })
-        */
-
-        //MOSTRA A NOTA DAS DISCIPLINAS
-        /*for (var i = 0; i < disciplinas.length; i++) {
-            console.log(disciplinas[i] + ' -- Nota1: ' + nota1[i] + ' Nota2: ' + nota2[i] + ' Nota3: ' + nota3[i])
-        }*/
-        console.log('Notas enviadas!')
-        //JUNTA A NOTA DE CADA BIMISTRE COM CADA DISCIPLINA
-        
-        /*const scoreTable = {};
-        for (i in disciplinas) {
-            scoreTable[i] = {
-                disciplina: disciplinas[i],
-                nota1: nota1[i],
-                nota2: nota2[i],
-                nota3: nota3[i]
-
-            }
-        }*/
+        console.table(scoreTable)
 
         //FECHA O NAVEGADOR PARA ENCERRAR A SESSÃO ABERTA E INICIA NOVAMENTE PARA LOGAR COM OUTRO USUÁRIO
         closeBrowser();
         startBroser();
 
         res.json({
-            aluno: studentName.trim(),
-            matricula: matriculaAluno,
-            disciplinas,
-            nota1,
-            nota2,
-            nota3
-            //scoreTable
+            'aluno(a)': studentName.trim(),
+            scoreTable
         })
     }
 }
