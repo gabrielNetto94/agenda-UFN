@@ -134,14 +134,15 @@ module.exports = {
                 }))
         )
 
-        console.table(scoreTable)
+        //console.table(scoreTable);
 
         //FECHA O NAVEGADOR PARA ENCERRAR A SESSÃO ABERTA E INICIA NOVAMENTE PARA LOGAR COM OUTRO USUÁRIO
         closeBrowser();
         startBroser();
 
         res.json({
-            'aluno(a)': studentName.trim(),
+            aluno: studentName.trim(),
+            matricula:matriculaAluno,
             scoreTable
         })
     }
