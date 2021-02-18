@@ -9,10 +9,7 @@ function App() {
 
     const [nomeAluno, setNomeAluno] = useState('');
     const [matricula, setMatricula] = useState('');
-    const [disciplinas, setDisciplinas] = useState([]);
-    const [nota1, setNota1] = useState([]);
-    const [nota2, setNota2] = useState([]);
-    const [nota3, setNota3] = useState([]);
+    const [scoreTable, setscoreTable] = useState([]);
 
     async function handleLogin(event) {
 
@@ -23,23 +20,18 @@ function App() {
             password
         });
 
-        const { aluno, matricula, disciplinas, nota1, nota2, nota3 } = response.data;
+        const { aluno, matricula, scoreTable } = response.data;
         setNomeAluno(aluno);
         setMatricula(matricula);
-        setDisciplinas(disciplinas);
-        setNota1(nota1);
-        setNota2(nota2);
-        setNota3(nota3);
-
+        setscoreTable(scoreTable);
     }
 
     function dataTable() {
         return (
             <>
-
-                <div class="container">
-                    <div class="row justify-content-md-center">
-                        <div class="col-md-auto">
+                <div className="container">
+                    <div className="row justify-content-md-center">
+                        <div className="col-md-auto">
                             <h5>Nome: {nomeAluno}  -  Matrícula: {matricula}</h5>
                             <table>
                                 <thead>
@@ -51,13 +43,15 @@ function App() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {disciplinas.map((d, index) => (
-                                        <tr key={index}>{d}
-                                            <td>{nota1[index]}</td>
-                                            <td>{nota2[index]}</td>
-                                            <td>{nota3[index]}</td>
+                                    {scoreTable.map((value) => (
+                                        <tr>
+                                            <td>{value.disciplina}</td>
+                                            <td>{value.nota1}</td>
+                                            <td>{value.nota2}</td>
+                                            <td>{value.nota3}</td>
                                         </tr>
                                     ))}
+
                                 </tbody>
                             </table>
 
