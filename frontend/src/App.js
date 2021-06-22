@@ -35,6 +35,7 @@ function App() {
                             <h5>Nome: {nomeAluno}  -  Matrícula: {matricula}</h5>
                             <table>
                                 <thead>
+                                    s
                                     <tr>
                                         <th>Disciplina</th>
                                         <th>Nota 1</th>
@@ -72,7 +73,7 @@ function App() {
                                 <div className="card-body">
 
                                     <h5 className="card-title">Login Agenda UFN</h5>
-
+                                    <h5 className="card-title">TESTE</h5>
                                     <form onSubmit={handleLogin}>
                                         <div className="input-group input-group-sm mb-3">
                                             <input className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Digite seu CPF" type="number" name="cpf" required onChange={event => setCpf(event.target.value)} />
